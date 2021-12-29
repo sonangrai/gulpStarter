@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="./img/fav.png" type="image/x-icon" />
+    <!-- CSS only -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="css/index.css"
+    />
+    {% block stylesheets %}{% endblock %} {# {% block javascripts %}{% endblock
+    %} #}
+  </head>
+  <body>
+    {% include "_header.twig" %}{% block contents %}{% endblock %} {% include
+    "_footer.twig" %}
+    <script type="text/javascript" src="./js/main.js"></script>
+  </body>
+</html>
