@@ -1,15 +1,15 @@
-const gulp = require("gulp");
-const twig = require("gulp-twig2html");
-const plumber = require("gulp-plumber");
-const rename = require("gulp-rename");
-const devserver = require("browser-sync");
-const babel = require("gulp-babel");
-const autoprefixer = require("autoprefixer");
-const sass = require("gulp-sass")(require("sass"));
-const postcss = require("gulp-postcss");
-const cssnano = require("cssnano");
-const sourcemap = require("gulp-sourcemaps");
-const uglify = require("gulp-uglify");
+let gulp = require("gulp"),
+  twig = require("gulp-twig2html"),
+  plumber = require("gulp-plumber"),
+  rename = require("gulp-rename"),
+  devserver = require("browser-sync"),
+  babel = require("gulp-babel"),
+  autoprefixer = require("autoprefixer"),
+  sass = require("gulp-sass")(require("sass")),
+  postcss = require("gulp-postcss"),
+  cssnano = require("cssnano"),
+  sourcemap = require("gulp-sourcemaps"),
+  uglify = require("gulp-uglify");
 
 /*
  * A twig task
@@ -90,6 +90,11 @@ gulp.task("style-build", function () {
     .pipe(gulp.dest("dist/css"));
 });
 
+//Image copy task
+gulp.task("imageTask", function () {
+  return gulp.src("src/images/**/*.*").pipe(gulp.dest("dist/images/"));
+});
+
 // Start development server
 // This is an option
 const serveoptions = {
@@ -109,13 +114,17 @@ gulp.task("browser-reload", function (cb) {
 
 function watch(cb) {
   gulp.watch("src/views/**/*.twig", gulp.series("twig", "browser-reload"));
+  gulp.watch("src/images/**/*.*", gulp.series("imageTask", "browser-reload"));
   gulp.watch("src/js/**/*.js", gulp.series("javascript", "browser-reload"));
   gulp.watch("src/scss/**/*.scss", gulp.series("style", "browser-reload"));
   httpserver.init(serveoptions);
 }
 
-gulp.task("serve", gulp.series("twig", "javascript", "style"));
-gulp.task("build", gulp.series("twig", "javascript-build", "style-build"));
+gulp.task("serve", gulp.series("twig", "javascript", "style", "imageTask"));
+gulp.task(
+  "build",
+  gulp.series("twig", "javascript-build", "style-build", "imageTask")
+);
 
 module.exports.serve = gulp.series("serve", watch);
 module.exports.build = gulp.series("build");
