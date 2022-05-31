@@ -20,7 +20,7 @@ gulp.task("twig", function () {
     .pipe(plumber())
     .pipe(twig({}))
     .pipe(rename({ extname: ".html" }))
-    .pipe(gulp.dest("dist/html"));
+    .pipe(gulp.dest("dist"));
 });
 
 /**
@@ -100,7 +100,7 @@ gulp.task("imageTask", function () {
 const serveoptions = {
   server: {
     baseDir: "./dist",
-    index: "html/index.html",
+    index: "index.html",
     serveStaticOptions: {
       extensions: ["html"],
     },
