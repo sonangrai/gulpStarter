@@ -23,6 +23,27 @@ gulp.task("twig", function () {
     .pipe(gulp.dest("dist"));
 });
 
+/*
+ * A font task
+ */
+gulp.task("font", function () {
+  return gulp.src("src/fonts/*.*").pipe(gulp.dest("dist/fonts"));
+});
+
+/*
+ * Plugin CSS Move task
+ */
+gulp.task("plugins-css", function () {
+  return gulp.src("src/plugins/*.css").pipe(gulp.dest("dist/css"));
+});
+
+/*
+ * Plugin JS Move task
+ */
+gulp.task("plugins-js", function () {
+  return gulp.src("src/plugins/*.js").pipe(gulp.dest("dist/js"));
+});
+
 /**
  * A js task
  */
@@ -126,10 +147,29 @@ function watch(cb) {
   httpserver.init(serveoptions);
 }
 
-gulp.task("serve", gulp.series("twig", "javascript", "style", "imageTask"));
+gulp.task(
+  "serve",
+  gulp.series(
+    "twig",
+    "javascript",
+    "style",
+    "imageTask",
+    "font",
+    "plugins-css",
+    "plugins-js"
+  )
+);
 gulp.task(
   "build",
-  gulp.series("twig", "javascript-build", "style-build", "imageTask")
+  gulp.series(
+    "twig",
+    "javascript-build",
+    "style-build",
+    "imageTask",
+    "font",
+    "plugins-css",
+    "plugins-js"
+  )
 );
 
 module.exports.serve = gulp.series("serve", watch);
